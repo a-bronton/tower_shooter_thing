@@ -18,12 +18,14 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        //gp.getPlayer().addCannonBall(e.getX() + (Utils.CURSOR_SIZE / 2), e.getY() + (Utils.CURSOR_SIZE / 2));
+        //System.out.println("Added cannonball");
+        gp.getPlayer().shoot();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        gp.getPlayer().updateRotation(e.getX() + (Utils.CURSOR_SIZE / 2f), e.getY() + (Utils.CURSOR_SIZE / 2f));
     }
 
     @Override
@@ -40,11 +42,11 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        gp.getPlayer().updateRotation(e.getX() + (Utils.CURSOR_SIZE / 2f), e.getY() + (Utils.CURSOR_SIZE / 2f));
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        gp.getPlayer().updateRotation(e.getX(), e.getY());
+        gp.getPlayer().updateRotation(e.getX() + (Utils.CURSOR_SIZE / 2f), e.getY() + (Utils.CURSOR_SIZE / 2f));
     }
 }
