@@ -1,9 +1,14 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 
-public class Main extends JFrame {
+public class Main extends JFrame implements WindowFocusListener {
+
+    private GamePanel gp;
+
     public static void main(String[] args) {
         new Main().setup();
     }
@@ -13,11 +18,14 @@ public class Main extends JFrame {
         setCursor(null);
         setResizable(false);
 
-        add(new GamePanel());
+        gp = new GamePanel();
+        add(gp);
 
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+
+        addWindowFocusListener(this);
 
         setCursor();
         setIcon();
@@ -40,5 +48,17 @@ public class Main extends JFrame {
         ImageIcon icon = new ImageIcon("res/gameIcon.png");
         Image iconScaled = icon.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT);
         setIconImage(iconScaled);
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent e) {
+        if (gp.isMusicPaused()) {
+            gp.unPauseMusic();
+        }
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent e) {
+        gp.pauseMusic();
     }
 }

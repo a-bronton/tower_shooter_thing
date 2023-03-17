@@ -63,10 +63,10 @@ public class Sound {
     }
 
     public void pauseMusic() {
-
+        clip.stop();
     }
 
     public void unPauseMusic() {
-
+        clip.start();
     }
 }

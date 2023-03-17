@@ -42,9 +42,9 @@ public class Player {
     public Player(GamePanel gp) {
         this.gp = gp;
 
-        width = 80;
-        height = 80;
-        x = 50;
+        width = (int) (44 * 2.5);
+        height = (int) (28 * 2.5);
+        x = 60;
         y = (int) (gp.getPreferredSize().getHeight() - height) / 2f;
 
         try {
@@ -121,18 +121,17 @@ public class Player {
         centerX = x + (width / 2f);
         centerY = y + (height / 2f);
 
-
-        g2.drawImage(peg2, (int) centerX - (width / 2), (int) centerY - (height / 2), width, height, null);
+        g2.drawImage(peg2, (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
 
         g2.setTransform(affineTransform);
         if (shooting) {
-            g2.drawImage(animationList[animationIndex], (int) centerX - (width / 2), (int) centerY - (height / 2), width, height, null);
+            g2.drawImage(animationList[animationIndex], (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
         } else {
-            g2.drawImage(cannonBody, (int) centerX - (width / 2), (int) centerY - (height / 2), width, height, null);
+            g2.drawImage(cannonBody, (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
         }
 
         g2.setTransform(defaultTx);
-        g2.drawImage(peg1, (int) centerX - (width / 2), (int) centerY - (height / 2), width, height, null);
+        g2.drawImage(peg1, (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
 
         if (showDebugData) {
             g2.setStroke(new BasicStroke(3));

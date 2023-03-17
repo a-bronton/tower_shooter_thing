@@ -15,6 +15,7 @@ public class GamePanel extends JPanel {
     private UI ui;
     private Sound soundEffect;
     private Sound music;
+    private boolean musicPaused = false;
 
     private ArrayList<CannonBall> cannonBalls;
 
@@ -101,6 +102,20 @@ public class GamePanel extends JPanel {
 
     public void playMusic(int index) {
         music.playMusic(index);
+    }
+
+    public void pauseMusic() {
+        music.pauseMusic();
+        musicPaused = true;
+    }
+
+    public void unPauseMusic() {
+        music.unPauseMusic();
+        musicPaused = false;
+    }
+
+    public boolean isMusicPaused() {
+        return musicPaused;
     }
 
     public MouseHandler getMouseHandler() {
