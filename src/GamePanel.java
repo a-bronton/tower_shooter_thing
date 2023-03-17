@@ -63,7 +63,7 @@ public class GamePanel extends JPanel {
         g.drawImage(backgroundLayer2, 0, 0, backgroundLayer2.getWidth() * 3, backgroundLayer2.getHeight() * 4,null);
 
         player.update();
-        player.draw(g2);
+        player.draw(g);
 
         for (int i = 0; i < cannonBalls.size(); i++) {
             cannonBalls.get(i).update();

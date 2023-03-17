@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class Player {
@@ -111,11 +112,10 @@ public class Player {
         animationIndex = 0;
     }
 
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
         AffineTransform defaultTx = g2.getTransform();
         g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
-
-        affineTransform = AffineTransform.getRotateInstance(Math.toRadians(angleDegrees), centerX, centerY);
         //affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
 
         centerX = x + (width / 2f);
@@ -123,11 +123,17 @@ public class Player {
 
         g2.drawImage(peg2, (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
 
-        g2.setTransform(affineTransform);
+        affineTransform = AffineTransform.getRotateInstance(Math.toRadians(angleDegrees), centerX, centerY);
+        //System.out.println(affineTransform.toString());
+        //g2.setTransform(affineTransform);
+        g2.rotate(Math.toRadians(angleDegrees), centerX, centerY);
+
         if (shooting) {
             g2.drawImage(animationList[animationIndex], (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
+            //System.out.println("Drawing cannon body animation");
         } else {
             g2.drawImage(cannonBody, (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
+            //System.out.println("Drawing cannon body idle");
         }
 
         g2.setTransform(defaultTx);

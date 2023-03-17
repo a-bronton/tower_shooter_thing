@@ -41,15 +41,17 @@ public class UI {
         g.drawImage(lifeBarImage, lifeBarX, lifeBarY, lifeBarWidth, lifeBarHeight, null);
 
         for (int i = 0; i < gp.getPlayer().getLife(); i++) {
-            hearts[i].update();
             hearts[i].draw(g);
         }
     }
 
     public void initHearts() {
         int x = 45;
+        int j = 0;
         for (int i = 0; i < hearts.length; i++) {
             hearts[i] = new Heart(lifeBarX + x, lifeBarY + ((lifeBarHeight - 32) / 2) + 2);
+            hearts[i].animationIndex = j;
+            j++;
             x += 32;
         }
     }
