@@ -1,7 +1,8 @@
+package main;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class Player {
@@ -37,8 +38,11 @@ public class Player {
     private BufferedImage[] animationList;
     private boolean shooting = false;
     private int animationTick;
-    private int animationSpeed = 5;
+    private int animationSpeed = 4;
     private int animationIndex;
+
+    // TODO: DATA
+    private PlayerData playerData;
 
     public Player(GamePanel gp) {
         this.gp = gp;
@@ -49,19 +53,21 @@ public class Player {
         y = (int) (gp.getPreferredSize().getHeight() - height) / 2f;
 
         try {
-            cannonBody = ImageIO.read(getClass().getResourceAsStream("cannonBody.png"));
-            peg1 = ImageIO.read(getClass().getResourceAsStream("cannonPeg1.png"));
-            peg2 = ImageIO.read(getClass().getResourceAsStream("cannonPeg2.png"));
+            cannonBody = ImageIO.read(getClass().getResourceAsStream("/cannonBody.png"));
+            peg1 = ImageIO.read(getClass().getResourceAsStream("/cannonPeg1.png"));
+            peg2 = ImageIO.read(getClass().getResourceAsStream("/cannonPeg2.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        playerData = new PlayerData();
 
         initImages();
     }
 
     public void initImages() {
         try {
-            cannonRaster = ImageIO.read(getClass().getResourceAsStream("cannonAnimation.png"));
+            cannonRaster = ImageIO.read(getClass().getResourceAsStream("/cannonAnimation.png"));
             animationList = new BufferedImage[4];
 
             for (int i = 0; i < animationList.length; i++) {
@@ -98,8 +104,8 @@ public class Player {
             life = maxLife;
         }
 
-        if (life < 0) {
-            life = 0;
+        if (life <= 0) {
+            gp.setGameState(gp.GAME_OVER);
         }
     }
 
@@ -116,7 +122,6 @@ public class Player {
         Graphics2D g2 = (Graphics2D) g.create();
         AffineTransform defaultTx = g2.getTransform();
         g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
-        //affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
 
         centerX = x + (width / 2f);
         centerY = y + (height / 2f);
@@ -124,21 +129,18 @@ public class Player {
         g2.drawImage(peg2, (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
 
         affineTransform = AffineTransform.getRotateInstance(Math.toRadians(angleDegrees), centerX, centerY);
-        //System.out.println(affineTransform.toString());
-        //g2.setTransform(affineTransform);
         g2.rotate(Math.toRadians(angleDegrees), centerX, centerY);
 
         if (shooting) {
             g2.drawImage(animationList[animationIndex], (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
-            //System.out.println("Drawing cannon body animation");
         } else {
             g2.drawImage(cannonBody, (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
-            //System.out.println("Drawing cannon body idle");
         }
 
         g2.setTransform(defaultTx);
         g2.drawImage(peg1, (int) centerX - (width / 3), (int) centerY - (height / 2), width, height, null);
 
+        // TODO: DEBUG
         if (showDebugData) {
             g2.setStroke(new BasicStroke(3));
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
@@ -173,7 +175,6 @@ public class Player {
         yDelta = y - centerY;
 
         angleDegrees = Math.toDegrees(Math.atan2(yDelta, xDelta));
-        //System.out.println(angleDegrees);
 
         mouseX = x;
         mouseY = y;
@@ -188,10 +189,8 @@ public class Player {
     }
 
     public void addCannonBall(int mouseX, int mouseY) {
-        float yVel = (int) (y -  mouseY) / 15f;
+        float yVel = (int) (y -  mouseY) / 12f;
         float xVel = mouseX / 30f;
-
-        //double y = Math.tan(angleDegrees) * width;
 
         gp.addCannonBall((int) x + (width / 2), (int) y + 10, xVel, yVel);
     }
@@ -214,5 +213,13 @@ public class Player {
 
     public void setLife(int life) {
         this.life = life;
+    }
+
+    public PlayerData getPlayerData() {
+        return playerData;
+    }
+
+    public int getMaxLife() {
+        return maxLife;
     }
 }

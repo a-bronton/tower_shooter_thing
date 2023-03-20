@@ -1,11 +1,12 @@
-import javax.imageio.ImageIO;
+package main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-import java.awt.image.BufferedImage;
+import java.awt.event.WindowListener;
 
-public class Main extends JFrame implements WindowFocusListener {
+public class Main extends JFrame implements WindowFocusListener, WindowListener {
 
     private GamePanel gp;
 
@@ -26,22 +27,12 @@ public class Main extends JFrame implements WindowFocusListener {
         setVisible(true);
 
         addWindowFocusListener(this);
+        addWindowListener(this);
 
-        setCursor();
+        setCursor(Utils.crossHair);
         setIcon();
 
         setTitle("Tower Defense Thing");
-    }
-
-    public void setCursor() {
-        try {
-            BufferedImage crossHairImage = ImageIO.read(getClass().getResourceAsStream("crossHair.png"));
-
-            Cursor crossHair = Toolkit.getDefaultToolkit().createCustomCursor(crossHairImage, new Point(0, 0), "Crosshair");
-            setCursor(crossHair);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void setIcon() {
@@ -60,5 +51,50 @@ public class Main extends JFrame implements WindowFocusListener {
     @Override
     public void windowLostFocus(WindowEvent e) {
         gp.pauseMusic();
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        System.out.println("Saving Data...");
+        gp.getPlayer().getPlayerData().saveData();
+        System.out.println("Finished Saving Data");
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        System.out.println("Loading Data...");
+        gp.getPlayer().getPlayerData().readSavedData();
+        System.out.println("Finished Loading Data");
+    }
+
+
+
+
+
+
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }

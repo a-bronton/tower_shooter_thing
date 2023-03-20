@@ -1,3 +1,5 @@
+package main;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -20,7 +22,8 @@ public class Sound {
         sounds = new URL[10];
 
         try {
-            sounds[0] = getClass().getResource("sound_effects/cannon_pop.wav");
+            sounds[0] = getClass().getResource("/sound_effects/cannon_pop.wav");
+            sounds[1] = getClass().getResource("/sound_effects/vine_boom.wav");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,7 +33,7 @@ public class Sound {
         musicTracks = new URL[10];
 
         try {
-            musicTracks[0] = getClass().getResource("music/game_loop.wav");
+            musicTracks[0] = getClass().getResource("/music/game_loop.wav");
         } catch (Exception e) {
             e.printStackTrace();
         }
